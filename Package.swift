@@ -20,7 +20,8 @@ let package = Package(
                 "Base.lproj",
                 "Info.plist",
                 "NES Tests",
-                "Test Roms"
+                "Test Roms",
+                "NES.xcworkspace"
             ]
         )
     ]
