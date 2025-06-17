@@ -18,7 +18,9 @@ let package = Package(
                 "Assets.xcassets",
                 "Emulator",
                 "Base.lproj",
-                "Info.plist"
+                "Info.plist",
+                "NES Tests",
+                "Test Roms"
             ]
         )
     ]
