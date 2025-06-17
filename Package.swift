@@ -21,7 +21,10 @@ let package = Package(
                 "Info.plist",
                 "NES Tests",
                 "Test Roms",
-                "NES.xcworkspace"
+                "NES.xcworkspace",
+                "Tests",
+                "*Test*.swift",
+                "*.xctest"
             ]
         )
     ]
