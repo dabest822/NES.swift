@@ -4,7 +4,9 @@ import PackageDescription
 let package = Package(
     name: "NES",
     defaultLocalization: "en",
-    platforms: [.iOS(.v14)],
+    platforms: [
+        .iOS(.v13),
+        .macOS(.v10_15)
     products: [
         .library(name: "NES", targets: ["NES"])
     ],
