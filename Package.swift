@@ -3,30 +3,29 @@ import PackageDescription
 
 let package = Package(
     name: "NES",
-    defaultLocalization: "en",
-    platforms: [.iOS(.v16)],
+    platforms: [
+        .iOS(.v14), .macOS(.v12)
+    ],
     products: [
         .library(name: "NES", targets: ["NES"])
     ],
     targets: [
         .target(
             name: "NES",
-            path: ".",                 // 👈 compile every folder
+            /// <-- the repo’s real folder that holds CPU.swift, PPU.swift, etc.
+            path: "NES",
+
+            /// exclude demo-app stuff that would clash with your app
             exclude: [
-                "NES.xcodeproj",
-                "NES.xcworkspace",
-                "Assets.xcassets",
-                "Emulator",
-                "Base.lproj",
-                "Info.plist",
-                "NES Tests",
-                "Test Roms",
-                "NES.xcworkspace",
-                "Tests",
-                "*Test*.swift",
-                "*.xctest"
+                "../NES.xcodeproj",
+                "../NES.xcworkspace",
+                "../Emulator",          // sample Mac app
+                "../Assets.xcassets",
+                "../Base.lproj",
+                "../AppDelegate.swift",
+                "../Info.plist",
+                "../ViewController.swift"
             ]
         )
     ]
 )
-
