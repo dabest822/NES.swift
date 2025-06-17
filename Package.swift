@@ -20,7 +20,8 @@ let package = Package(
                 "NES.xcworkspace",
                 "Assets.xcassets",
                 "Base.lproj",
-                "Info.plist"
+                "Info.plist",
+                "AppDelegate.swift"
             ]
         )
     ]
