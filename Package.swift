@@ -12,14 +12,20 @@ let package = Package(
     targets: [
         .target(
             name: "NES",
-            path: "Sources/NES",      // ← exact path shown above
-            exclude: [],             // nothing to exclude
-            resources: []            // no localized assets = no defaultLocalization needed
-        ),
-        .testTarget(
-            name: "NESTests",
-            dependencies: ["NES"],
-            path: "Tests"
+            /// <-- the repo’s real folder that holds CPU.swift, PPU.swift, etc.
+            path: "NES",
+
+            /// exclude demo-app stuff that would clash with your app
+            exclude: [
+                "../NES.xcodeproj",
+                "../NES.xcworkspace",
+                "../Emulator",          // sample Mac app
+                "../Assets.xcassets",
+                "../Base.lproj",
+                "../AppDelegate.swift",
+                "../Info.plist",
+                "../ViewController.swift"
+            ]
         )
     ]
 )
