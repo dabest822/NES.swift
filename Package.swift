@@ -18,7 +18,8 @@ let package = Package(
                 "Assets.xcassets",
                 "Base.lproj",
                 "Info.plist",
-                "AppDelegate.swift"
+                "AppDelegate.swift",
+                "NES Tests"
             ]
         )
     ]
