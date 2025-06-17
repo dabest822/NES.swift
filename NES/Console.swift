@@ -2,54 +2,38 @@ import Foundation
 
 public final class Console {
     internal let cpu: CPU
+    internal let ppu: PPU
 
     public var controller1: Buttons {
-        get {
-            cpu.controller1.pressed
-        }
-        set {
-            cpu.controller1.pressed = newValue
-        }
+        get { cpu.controller1.pressed }
+        set { cpu.controller1.pressed = newValue }
     }
 
     public var controller2: Buttons {
-        get {
-            cpu.controller2.pressed
-        }
-        set {
-            cpu.controller2.pressed = newValue
-        }
+        get { cpu.controller2.pressed }
+        set { cpu.controller2.pressed = newValue }
     }
 
-    public var frames: Int {
-        ppu.frame
-    }
-
-    internal let ppu: PPU
+    public var frames: Int { ppu.frame }
 
     public var screenData: Data {
-        Data(bytesNoCopy: ppu.frontBuffer.pixels.baseAddress!, count: ppu.frontBuffer.pixels.count, deallocator: .none)
+        Data(bytesNoCopy: ppu.frontBuffer.pixels.baseAddress!, 
+             count: ppu.frontBuffer.pixels.count, 
+             deallocator: .none)
     }
 
     public convenience init(cartridge: Cartridge, initialAddress: UInt16? = nil) {
         precondition(cartridge.mapper == 000 || cartridge.mapper == 002)
-
         let mapper = Mapper002(cartridge: cartridge)
-
         self.init(mapper: mapper)
-
-        if let pc = initialAddress {
-            cpu.pc = pc
-        }
+        if let pc = initialAddress { cpu.pc = pc }
     }
 
     init(mapper: Mapper) {
         cpu = CPU(mapper: mapper)
         ppu = PPU(mapper: mapper)
-
         cpu.ppu = ppu
         ppu.cpu = cpu
-
         cpu.pc = cpu.read16(0xFFFC)
     }
 
@@ -60,13 +44,9 @@ public final class Console {
 
     public func step() {
         let before = cpu.cycles
-
         cpu.step()
-
         let after = cpu.cycles
-
         ppu.step(steps: 3 * (after - before))
-
         if ppu.nmiTriggered {
             ppu.nmiTriggered = false
             cpu.triggerNMI()
@@ -77,17 +57,13 @@ public final class Console {
 
     public func step(time: TimeInterval) {
         let target = cpu.cycles + Int(time * Console.frequency)
-
-        while cpu.cycles < target {
-            step()
-        }
+        while cpu.cycles < target { step() }
     }
 
-    public var cycles: Int {
-        cpu.cycles
-    }
+    public var cycles: Int { cpu.cycles }
+}
 
-    // Add these extensions to Console.swift
+// MARK: - Debug Extensions (should be outside the Console class)
 extension Console {
     public struct CPUState {
         public let pc: UInt16
@@ -105,7 +81,7 @@ extension Console {
     }
     
     public func getCPUState() -> CPUState {
-        return CPUState(
+        CPUState(
             pc: cpu.pc,
             a: cpu.a,
             x: cpu.x,
@@ -116,7 +92,7 @@ extension Console {
     }
     
     public func getPPUState() -> PPUState {
-        return PPUState(
+        PPUState(
             scanline: ppu.scanline,
             cycle: ppu.cycle,
             frame: ppu.frame
@@ -149,5 +125,4 @@ extension String {
     func pad(to length: Int, with character: Character = "0") -> String {
         String(repeating: character, count: max(0, length - count)) + self
     }
-}
 }
